@@ -42,12 +42,16 @@ from PIL import Image
 from io import BytesIO
 
 images = []
-for url in image_urls:
-    response = requests.get(url)
+for i in range(len(image_urls)):
+    response = requests.get(image_urls[i])
     img = Image.open(BytesIO(response.content))
     if img.mode != 'RGB':
         img = img.convert('RGB')
     images.append(img)
+    print(f"Downloading {len(image_urls) - i}/{len(image_urls)}...")
+
+print("Generating PDF...")
 
 # Save as PDF
 images[0].save('output.pdf', save_all=True, append_images=images[1:])
+print("DONE!!!")
